@@ -101,6 +101,15 @@ enum m0_fab__conn_status {
 };
 
 /**
+ * Represents the state of a libfab transfer machine
+ */
+enum m0_fab__tm_state {
+	FAB_TM_INIT,
+	FAB_TM_STARTED,
+	FAB_TM_SHUTDOWN
+};
+
+/**
  * Libfab structure for list of fabric interfaces in a transfer machine
  */
 struct m0_fab__list {
@@ -253,8 +262,8 @@ struct m0_fab__tm {
 	/** Transmit Completion Queue */
 	struct fid_cq             *ftm_tx_cq;
 	
-	/** Shutdown flag */
-	bool                       ftm_shutdown;
+	/** State of the transfer machine */
+	volatile uint8_t           ftm_state;
 
 	/** List of completed buffers */
 	struct m0_tl               ftm_done;
